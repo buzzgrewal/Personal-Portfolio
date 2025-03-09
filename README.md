@@ -1,4 +1,4 @@
-```markdown
+
 # Personal Portfolio
 
 A clean and responsive personal portfolio website designed to showcase projects, skills, and contact details.
