@@ -51,5 +51,5 @@ Simply open the `index.html` file in your browser to view the portfolio website.
 
 
 ## Contact
-For any inquiries or feedback, please reach out via [your-email@example.com](mailto:buzzgrewal@gmail.com).
+For any inquiries or feedback, please reach out via [buzzgrewal@gmail.com](mailto:buzzgrewal@gmail.com).
 
