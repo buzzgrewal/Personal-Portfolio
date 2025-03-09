@@ -1,36 +1,38 @@
 <?php
 
+$receiving_email_address = 'abdullahramzan2002@gmail.com';
 
-  // Replace contact@example.com with your real receiving email address
-  $receiving_email_address = 'abdullahrazman2002@gmail.com';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = strip_tags(trim($_POST['name']));
+    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+    $subject = strip_tags(trim($_POST['subject']));
+    $message = trim($_POST['message']);
 
-  if( file_exists($php_email_form = '../assets/vendor/php-email-form/php-email-form.php' )) {
-    include( $php_email_form );
-  } else {
-    die( 'Unable to load the "PHP Email Form" Library!');
-  }
+    if (empty($name) || empty($email) || empty($subject) || empty($message)) {
+        die('All fields are required.');
+    }
 
-  $contact = new PHP_Email_Form;
-  $contact->ajax = true;
-  
-  $contact->to = $receiving_email_address;
-  $contact->from_name = $_POST['name'];
-  $contact->from_email = $_POST['email'];
-  $contact->subject = $_POST['subject'];
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        die('Invalid email format.');
+    }
 
-  // Uncomment below code if you want to use SMTP to send emails. You need to enter your correct SMTP credentials
-  /*
-  $contact->smtp = array(
-    'host' => 'example.com',
-    'username' => 'example',
-    'password' => 'pass',
-    'port' => '587'
-  );
-  */
+    $email_subject = "New Contact Form Message: $subject";
+    $email_body = "You have received a new message from your website contact form.\n\n" .
+                  "Name: $name\n" .
+                  "Email: $email\n" .
+                  "Subject: $subject\n\n" .
+                  "Message:\n$message\n";
 
-  $contact->add_message( $_POST['name'], 'From');
-  $contact->add_message( $_POST['email'], 'Email');
-  $contact->add_message( $_POST['message'], 'Message', 10);
+    $headers = "From: $name <$email>\r\n";
+    $headers .= "Reply-To: $email\r\n";
 
-  echo $contact->send();
+    if (mail($receiving_email_address, $email_subject, $email_body, $headers)) {
+        echo 'Message sent successfully!';
+    } else {
+        echo 'Message sending failed. Please try again later.';
+    }
+} else {
+    die('Invalid request.');
+}
+
 ?>
